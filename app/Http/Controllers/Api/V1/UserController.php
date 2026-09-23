@@ -35,13 +35,16 @@ class UserController extends Controller
             $signupRequest->validated('name'),
             $signupRequest->validated('email'),
             $signupRequest->validated('password'),
-            $signupRequest->validated('verified'),
+            $signupRequest->validated('verified') ?? false,
             $signupRequest->validated('profile_picture') ?? 'default.png'
         );
 
-        return UserResource::make($user['user'])
-            ->response()
-            ->setStatusCode(201);
+        return response()->json(
+            [
+                'user' => $user['user'],
+                'token' => $user['token']
+            ]
+        )->setStatusCode(201);
     }
 
     /**

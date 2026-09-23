@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Http\Resources\Api\V1\UserResource;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -28,6 +29,9 @@ class UserService
             ]
         );
 
-        return ['user' => $user];
+        return [
+            'user' => UserResource::make($user),
+            'token' => $user->createToken('fronted')->plainTextToken
+        ];
     }
 }
